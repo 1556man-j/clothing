@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { assets } from "../assets/assets/frontend_assets/assets";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate  } from "react-router-dom";
+import { ShopContext } from "./context/ShopContext";
+
 function NavBar() {
   const [visible, setVisible] = useState(false);
-
+  const {setShowSearch, getCartCount} = useContext(ShopContext)
+  const navigate = useNavigate();
+  
+  const handleSearchIconClick = () => {
+    setShowSearch(true);  // This makes the search bar visible
+    navigate('/collection');  // This navigates to the collection page
+  };
   return (
     <div className="flex justify-between items-center py-5 font-medium">
       <Link to='/'> <img src={assets.logo} alt="logo" className="w-32" /></Link>
@@ -35,6 +43,7 @@ function NavBar() {
           src={assets.search_icon}
           alt="search"
           className="w-5 cursor-pointer"
+          onClick={handleSearchIconClick}
         />
         <div className="relative group">
           <Link to='/login'> <img
@@ -55,9 +64,10 @@ function NavBar() {
             src={assets.cart_icon}
             alt="cart"
             className="w-5 cursor-pointer"
+            
           />
           <span className="absolute bg-black rounded-full w-4 text-white font-bold right-[-6px] text-[8px] top-3 aspect-square text-center leading-4">
-            0
+            {getCartCount()}
           </span>
         </Link>
         <img
